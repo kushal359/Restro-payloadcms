@@ -1,0 +1,10 @@
+.card {
+  
+  padding: 5px;
+}
+
+.card:hover {
+  /* Moving the outline inward simulates a padding/border change */
+  border-radius: var(--mantine-radius-md);
+  padding: 2px;
+}

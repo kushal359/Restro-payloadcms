@@ -1,5 +1,7 @@
 import React from 'react'
 import './styles.css'
+import '@mantine/core/styles.css';
+import { MantineProvider } from '@mantine/core';
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -12,7 +14,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <main>{children}</main>
+        <main>
+          <MantineProvider>
+            {children}
+          </MantineProvider>
+</main>
       </body>
     </html>
   )
