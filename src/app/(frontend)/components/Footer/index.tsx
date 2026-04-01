@@ -62,7 +62,6 @@ export default function Footer () {
           </Group>
         </Container>
       </div>
-
     </footer>
   );  
 }

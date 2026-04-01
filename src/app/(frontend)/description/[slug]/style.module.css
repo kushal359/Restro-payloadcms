@@ -28,9 +28,10 @@
 
 .featureddishimage {
   width: 100%;
-  height: 220;
+  aspect-ratio: 1/1;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 100%;
   transition: transform 0.3s ease;
 }
 

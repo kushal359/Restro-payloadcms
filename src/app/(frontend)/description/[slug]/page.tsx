@@ -17,6 +17,7 @@ import {
 import Navbar from '../../components/Header'
 import { fetchMenu } from '../../lib/fetchmenu'
 import style from './style.module.css'
+import Footer from '../../components/Footer'
 /**
  * sluggify function
  */
@@ -138,6 +139,7 @@ export default function Description({ params }: Props) {
           </Grid>
         </Stack>
       </Box>
+    <Footer/>
     </AppShell>
 
   )
