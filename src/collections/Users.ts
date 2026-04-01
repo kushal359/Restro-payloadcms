@@ -65,10 +65,10 @@ export const Users: CollectionConfig = {
      * Prevent non admin user from upgrading their role.
      */
    beforeOperation: [
-        async ({args, operation, context}: {args: any; operation: string; context: any}) => {
+        async ({req, args, operation, context}: {req:any; args: any; operation: string; context: any}) => {
             if (operation === 'create' || operation === 'update') {
               if (args.data?.role === 'admin') {
-                if (!args.req.user || args.req.user.role !== 'admin') {
+                if (!req.user || req.user.role !== 'admin') {
                   args.data.role = 'user';
                   context.customError = {
                     type: 'role',

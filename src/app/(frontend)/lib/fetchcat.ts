@@ -1,6 +1,6 @@
 export async function fetchCat() {
   try {
-    const res = await fetch("http://localhost:3000/api/category");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/category`);
     if (!res.ok) {
       throw new Error("Network response was not ok");
     }

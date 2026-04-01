@@ -51,7 +51,7 @@ export default function Content() {
   const filteredMenu = menuItems?.filter((item: any) =>
     !selectedCategory || item.category?.name === selectedCategory
   );
-
+  console.log(process.env.NEXT_PUBLIC_SERVER_API_URL)
   return (
     <Container size="xl">
         <div className={style.imageWrapper}>
