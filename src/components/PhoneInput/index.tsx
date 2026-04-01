@@ -19,11 +19,11 @@ export const PhoneInput = ({ path, field }: any) => {
           padding: '10px',
           borderRadius: '4px',
           background: 'var(--theme-input-bg)',
-          color: 'var(--theme-input-color)'
+          color: 'var(--theme-input-color)',
         }}
         value={value || ''}
         onValueChange={(values) => {
-          setValue(values.value) 
+          setValue(values.value)
         }}
       />
     </div>

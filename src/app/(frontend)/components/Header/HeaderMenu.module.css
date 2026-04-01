@@ -1,17 +1,31 @@
-.GridContainer{
-    width: 100%;
-    padding: 15px 0px;
-    margin: 0px;
+.GridContainer {
+  width: 100%;
+  padding: 10px 15px;
+}
+@media (max-width: 768px) {
+  .group {
+    display: none;
+  }
+
+  .gridinner {
+    justify-content: space-between;
+  }
 }
 .gridinner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6600;;
+  text-decoration: none;
+}
+
+.textlink {
+  text-decoration: none;
 }
 
 .group {
   display: flex;
-  gap: 2rem; 
+  gap: 2rem;
   align-items: center;
   list-style: none;
   padding: 0;
@@ -20,14 +34,16 @@
 
 .link {
   text-decoration: none;
-  color: #333;
+  color: black;
   font-weight: 500;
-  transition: color 0.3s, transform 0.2s;
+  transition:
+    color 0.3s,
+    transform 0.2s;
   position: relative;
 }
 
 .link:hover {
-  color: #ff6600; 
+  color: #ff6600;
   transform: translateY(-2px);
 }
 
@@ -45,4 +61,25 @@
 
 .link:hover::after {
   width: 100%;
+}
+
+.search {
+  width: 50%;
+}
+
+.dropdownItem {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #ff6600;
+  color: #fff;
+  text-decoration: none;
 }

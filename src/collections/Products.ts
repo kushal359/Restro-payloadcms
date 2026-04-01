@@ -4,10 +4,19 @@ export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['image', 'name', 'category', 'price','isAvailable','isFeatured','description','tags'],
+    defaultColumns: [
+      'image',
+      'name',
+      'category',
+      'price',
+      'isAvailable',
+      'isFeatured',
+      'description',
+      'tags',
+    ],
   },
   fields: [
-   {
+    {
       name: 'name',
       type: 'text',
       required: true,
@@ -15,29 +24,29 @@ export const Products: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      admin:{
+      admin: {
         components: {
-            Field:'src/components/RichTextContent'
-        }
+          Field: 'src/components/RichTextContent',
+        },
       },
       required: true,
     },
     {
-        type:'row',
-        fields: [
-            {
-                name: 'price',
-                label: 'Price ($)',
-                type: 'number',
-                required: true,
-            },
-            {
-                name: 'category',
-                type: 'relationship',
-                relationTo: 'category',
-                required: true,
-            },
-        ]
+      type: 'row',
+      fields: [
+        {
+          name: 'price',
+          label: 'Price ($)',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'category',
+          type: 'relationship',
+          relationTo: 'category',
+          required: true,
+        },
+      ],
     },
     {
       name: 'image',
@@ -47,19 +56,19 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
-        type: 'row',
-        fields: [
-             {
-                name: 'isAvailable',
-                type: 'checkbox',
-                defaultValue: true,
-            },
-            {
-                name: 'isFeatured',
-                type: 'checkbox',
-                defaultValue: false,
-            },
-        ]
+      type: 'row',
+      fields: [
+        {
+          name: 'isAvailable',
+          type: 'checkbox',
+          defaultValue: true,
+        },
+        {
+          name: 'isFeatured',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+      ],
     },
     {
       name: 'tags',

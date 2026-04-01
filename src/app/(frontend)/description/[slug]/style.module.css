@@ -1,0 +1,48 @@
+
+.appshell {
+  width: 100%;
+  border: 1px solid black;
+}
+.detailsimg {
+  width: 80%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.1s ease;
+}
+
+.detailsimg:hover {
+  transform: scale(1.08);
+
+}
+
+.featureddish {
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featureddish:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.featureddishimage {
+  width: 100%;
+  height: 220;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.featureddishimage:hover {
+    transform: scale(1.08);
+
+}
+
+.trendbox {
+    margin: 0px 15%;
+}
+
+.para {
+    text-align: justify;
+}

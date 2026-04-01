@@ -1,17 +1,17 @@
-.textblack{
-color: black;
+.textblack {
+  color: black;
 }
 
-.height300{
-    height: 300px;
+.height300 {
+  height: 300px;
 }
 
 .light-mode {
-    background-color: #fff;
-    color: black;
+  background-color: #fff;
+  color: black;
 }
 
 .dark-mode {
-    background-color: black;
-    color: #fff;
+  background-color: black;
+  color: #fff;
 }
