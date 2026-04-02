@@ -14,31 +14,40 @@ import {
   Burger,
   Drawer,
   Stack,
+  Modal,
+  Container
 } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
-import { IconChefHat, IconChevronDown } from '@tabler/icons-react'
+import { IconChefHat, IconChevronDown, IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
 import style from './HeaderMenu.module.css'
 import { FaSearch } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { fetchCat } from '../../lib/fetchcat'
 import { usePathname } from 'next/navigation'
+import { useDisclosure } from '@mantine/hooks'
+import { Image } from '@mantine/core'
+import { fetchMenu } from '../../lib/fetchmenu'
 
-export default function Navbar({ onSearch, onCategoryChange }: any) {
+export default function Navbar({ onCategoryChange }: any) {
   const [categories, setCategories] = useState<any[]>([])
-  const [searchValue, setSearchValue] = useState('')
   const [opened, setOpened] = useState(false)
+  const [openedsearch, { open, close }] = useDisclosure(false)
+  const [searchValue, setSearchValue] = useState('')
+  const [items, setItems] = useState<any[]>([])
+const [filteredItems, setFilteredItems] = useState<any[]>([])
   const pathname = usePathname()
   const shouldLoadCategories = pathname === '/'
-  const isMobile = useMediaQuery('(max-width: 768px)')
 
   useEffect(() => {
+    if (!shouldLoadCategories) return
+
     const getCat = async () => {
       const data = await fetchCat()
       setCategories(data)
     }
+
     getCat()
-  }, [])
+  }, [shouldLoadCategories])
 
   const scrollToHeight = () => {
     window.scrollTo({
@@ -47,21 +56,30 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
     })
   }
   useEffect(() => {
-  if (!shouldLoadCategories) return
-
-  const getCat = async () => {
-    const data = await fetchCat()
-    setCategories(data)
+  const getItems = async () => {
+    const data = await fetchMenu()
+    setItems(data)
+    setFilteredItems(data)
   }
 
-  getCat()
-}, [shouldLoadCategories])
+  getItems()
+}, [])
+
+  const handleSearch = (value: string) => {
+  setSearchValue(value)
+
+  const filtered = items.filter((item) =>
+    item.name.toLowerCase().includes(value.toLowerCase())
+  )
+
+  setFilteredItems(filtered)
+}
 
   return (
     <>
-      <Grid className={style.GridContainer}>
+      <Grid className={style.GridContainer} align="center">
         {/* Logo */}
-        <Grid.Col span={isMobile ? 6 : 3} className={style.gridinner}>
+        <Grid.Col span={{ base: 6, sm: 3 }}>
           <Link className={style.textlink} href="/">
             <Group gap="xs">
               <IconChefHat size={26} />
@@ -73,14 +91,19 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
         </Grid.Col>
 
         {/* Desktop Nav */}
-        {!isMobile && (
-          <Grid.Col span={6} className={style.gridinner}>
-            <Group className={style.group}>
-              <Link className={style.link} href="/aboutus">About Us</Link>
-              <Link className={style.link} href="/">Menu</Link>
-              <Link className={style.link} href="/contactus">Contact</Link>
+        <Grid.Col span={{ base: 0, sm: 7 }} visibleFrom="sm">
+          <Group className={style.group}>
+            <Link className={`${style.link} ${pathname === '/aboutus' ? style.active : ''}`} href="/aboutus">
+              About Us
+            </Link>
+            <Link className={`${style.link} ${pathname === '/menu' ? style.active : ''}`} href="/menu">
+              Menu
+            </Link>
+            <Link className={`${style.link} ${pathname === '/contactus' ? style.active : ''}`} href="/contactus">
+              Contact
+            </Link>
 
-             {shouldLoadCategories && ( 
+            {shouldLoadCategories && (
               <HoverCard width={600} position="bottom" radius="md" shadow="md">
                 <HoverCard.Target>
                   <Link href="#" className={style.link}>
@@ -91,8 +114,8 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
                   </Link>
                 </HoverCard.Target>
 
-                <HoverCard.Dropdown>
-                  <SimpleGrid cols={2}>
+                <HoverCard.Dropdown className={style.cate}>
+                  <SimpleGrid cols={3}>
                     {categories.map((cat, index) => (
                       <Anchor
                         key={index}
@@ -107,73 +130,142 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
                     ))}
                   </SimpleGrid>
                 </HoverCard.Dropdown>
-              </HoverCard>)}
-            </Group>
-          </Grid.Col>
-        )}
+              </HoverCard>
+            )}
+          </Group>
+        </Grid.Col>
 
-        {/* Search */}
-        {!isMobile && (
-          <Grid.Col span={3} className={style.gridinner}>
-            <Input
-              placeholder="Search Food..."
-              radius="xl"
-              value={searchValue}
-              onChange={(e) => {
-                const value = e.currentTarget.value
-                setSearchValue(value)
-                onSearch(value)
-              }}
-              leftSection={<FaSearch size={14} />}
+        {/* Desktop Search Icon ✅ FIXED */}
+        <Grid.Col span={{ base: 0, sm: 2 }} visibleFrom="sm">
+          <Center style={{ height: '100%' }}>
+            <IconSearch
+              size={22}
+              color="#000"
+              style={{ cursor: 'pointer' }}
+              onClick={open}
             />
-          </Grid.Col>
-        )}
+          </Center>
+        </Grid.Col>
 
         {/* Mobile Burger */}
-        {isMobile && (
-          <Grid.Col span={6} className={style.gridinner} style={{ justifyContent: 'flex-end', paddingRight: 20 }}>
-            <Burger opened={opened} onClick={() => setOpened(!opened)} />
-          </Grid.Col>
-        )}
+        <Grid.Col
+          span={{ base: 6, sm: 0 }}
+          hiddenFrom="sm"
+          style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 20 }}
+        >
+          <Burger opened={opened} onClick={() => setOpened(!opened)} />
+        </Grid.Col>
       </Grid>
 
       {/* Mobile Drawer */}
-      <Drawer opened={opened} onClose={() => setOpened(false)} title="Menu" padding="md" size="75%">
-        <Stack>
-          <Link href="#about-us">About Us</Link>
-          <Link href="#menu">Menu</Link>
-          <Link href="#review">Review</Link>
-          <Link href="#contact-us">Contact</Link>
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Menu"
+        padding="md"
+        size="100%"
+      >
+        <Stack gap="md">
+          <Link href="/aboutus" onClick={() => setOpened(false)}>About Us</Link>
+          <Link href="/menu" onClick={() => setOpened(false)}>Menu</Link>
+          <Link href="/contactus" onClick={() => setOpened(false)}>Contact</Link>
 
           <Divider />
 
-          <Text fw={500}>Categories</Text>
-          {categories.map((cat, index) => (
-            <Anchor
-              key={index}
-              onClick={() => {
-                onCategoryChange(cat.name)
-                scrollToHeight()
-                setOpened(false)
-              }}
-            >
-              {cat.name}
-            </Anchor>
-          ))}
+          {shouldLoadCategories && (
+            <>
+              <Text fw={500}>Categories</Text>
+              {categories.map((cat, index) => (
+                <Anchor
+                  key={index}
+                  onClick={() => {
+                    onCategoryChange(cat.name)
+                    scrollToHeight()
+                    setOpened(false)
+                  }}
+                >
+                  {cat.name}
+                </Anchor>
+              ))}
+              <Divider />
+            </>
+          )}
 
-          <Divider />
-          <Input
-            placeholder="Search Food..."
-            value={searchValue}
-            onChange={(e) => {
-              const value = e.currentTarget.value
-              setSearchValue(value)
-              onSearch(value)
+          {/* Mobile Search Icon */}
+          <IconSearch
+            className={style.searchicon}
+            onClick={() => {
+              setOpened(false)
+              open()
             }}
-            leftSection={<FaSearch size={14} />}
           />
         </Stack>
       </Drawer>
-    </>
+
+      {/* Search Modal */}
+     <Modal opened={openedsearch} size="lg" onClose={close} title="Search Food" centered>
+        <Input
+          placeholder="Search Food..."
+          radius="xl"
+          size="sm"
+          value={searchValue}
+          onChange={(e) => handleSearch(e.currentTarget.value)}
+          leftSection={<FaSearch size={12} />}
+        />
+
+        <Container mt="sm">
+          {searchValue && filteredItems.length > 0 ? (
+            <Stack
+              style={{ width: '100%', alignItems: 'center' }}
+              gap="xs"
+            >              
+            {filteredItems.map((item, index) => (
+                <Box
+                    key={index}
+                    p="sm"
+                    style={{
+                      border: '1px solid #eee',
+                      borderRadius: 6,
+                      cursor: 'pointer',
+                      width: '50%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                    onClick={() => {
+                      onCategoryChange(item.name)
+                      close()
+                    }}
+                  >
+                  <Group p="xs" style={{ width: '100%', justifyContent: 'center' }}>                    
+                    {item.image && (
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item.image?.[0]?.url}`}
+                        width={32}
+                        height={32}
+                        radius="sm"
+                      />
+                    )}
+                    <div>
+                      <Text fw={500} size="sm">
+                        {item.name}
+                      </Text>
+                      {item.price && (
+                        <Text size="xs" c="dimmed">
+                          ${item.price}
+                        </Text>
+                      )}
+                    </div>
+                  </Group>
+                </Box>
+              ))}
+            </Stack>
+          ) : (
+            <Text size="xs" c="dimmed" mt="xs">
+              No items found
+            </Text>
+          )}
+        </Container>
+      </Modal>
+          </>
   )
 }

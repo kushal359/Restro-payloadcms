@@ -32,7 +32,7 @@ export default function Home() {
       {/* Top Navbar */}
       <Box className={style.imageWrapper}> 
         <Grid pt={60}>
-          <Grid.Col className={style.textbox} span={6}>
+          <Grid.Col className={style.textbox} span={{ base: 12, md: 6, lg: 6 }}>
             <Box className={style.insidetextbox}>
               <Text className={style.text1} ta="left" size='1rem' fw={600}>{banItems?.welcomeText}</Text>
               <Text className={style.text} ta="left" size='3rem' fw={600}>{banItems?.mainHeadingLine1}</Text>
@@ -44,7 +44,7 @@ export default function Home() {
               </Flex>
               </Box>
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
             <Image
               radius="md"
               className={style.bgImage}

@@ -118,3 +118,11 @@
   font-size: 24px;
   margin-top: 20px;
 }
+
+.featuredanchor {
+  text-decoration: none;
+}
+
+.catmenucol {
+  padding: 0 10%;
+}

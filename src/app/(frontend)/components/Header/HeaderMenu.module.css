@@ -1,6 +1,6 @@
 .GridContainer {
   width: 100%;
-  padding: 10px 15px;
+  padding: 10px 100px;
 }
 @media (max-width: 768px) {
   .group {
@@ -21,6 +21,7 @@
 
 .textlink {
   text-decoration: none;
+  color: #ff6600;
 }
 
 .group {
@@ -82,4 +83,18 @@
   background-color: #ff6600;
   color: #fff;
   text-decoration: none;
+}
+
+.active {
+  color: #ff6b6b;
+  font-weight: 600;
+  border-bottom: 2px solid #ff6b6b;
+}
+.cate {
+  width: 10%;
+}
+
+.searchicon{
+  color: #ff6600;
+  border: 1px solid black;
 }

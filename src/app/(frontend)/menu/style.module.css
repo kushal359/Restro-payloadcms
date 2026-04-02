@@ -1,0 +1,34 @@
+.linktd {
+  text-decoration: none;
+}
+
+.filtermenuCard {
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.filtermenuCard:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+.innerfiltermenu {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.innerfiltermenuImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.innerfiltermenuImg:hover {
+  transform: scale(1.08);
+}
+
+/* .maincontainer {
+
+} */
