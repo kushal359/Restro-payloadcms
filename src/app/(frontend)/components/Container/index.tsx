@@ -5,6 +5,9 @@ import { Stack, Grid, Title, Card, Text, Group, Container, Flex, Box } from '@ma
 import Link from 'next/link'
 import { fetchMenu } from '../../lib/fetchmenu'
 import style from './style.module.css'
+import { fetchtestimony } from '../../lib/fetchtestimonial'
+import test from 'node:test'
+
 
 /**
  * sluggify function
@@ -18,6 +21,7 @@ function slugify(data: string) {
 
 export default function Content({ searchQuery, selectedCategory }: any) {
   const [menuItems, setMenuItems] = useState<any[]>([])
+  const [tesItems, setTesItems] = useState<any>([])
 
   /**
    * Fetch menu
@@ -44,6 +48,24 @@ export default function Content({ searchQuery, selectedCategory }: any) {
 
     return matchesCategory && matchesSearch
   })
+
+   /**
+     * Fetch Testimonial
+     */
+    useEffect(() => {
+      const gettestimony = async () => {
+        const items = await fetchtestimony()
+        setTesItems(items)
+      }
+      gettestimony()
+    }, [])
+
+    const filterTesti = tesItems?.filter((item: any) => {
+      const matchtesti = item?.featured === true
+      return matchtesti;
+    })
+
+    console.log(filterTesti);
 
   return (
     <Container size="xl">
@@ -142,80 +164,32 @@ export default function Content({ searchQuery, selectedCategory }: any) {
         <Box mt="xl" className={style.testimonbox}>
           <Text ta="center" fw="600"  className={style.innertesttext}>HEAR OUR CUSTOMERS</Text>
           <Grid  className={style.testigrid} justify="center">
-            <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+            {filterTesti?.map((item: any)=>(
+               <Grid.Col key={item?.id} span={{ base: 12, sm: 6, md: 3 }}>
                   <Card
                     radius="lg"
                     shadow="md"
-                    padding="md"
+                    padding="xl"
                     withBorder
                     className={style.featureddish}
                   >
                     <img
-                      src="https://picsum.photos/id/16/200/300"
+                      src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}${item?.personimage?.url}`}
                       className={style.featureddishimage}
                     />
 
                     <Stack gap={4} mt="sm">
                       <Group justify="space-between">
-                        <Text fw={700}>KP OLI</Text>
+                        <Text fw={700}>{item?.name}</Text>
                       </Group>
 
                       <Text size="sm" c="dimmed" lineClamp={2}>
-                        "Very Tasty Food Loved the Place and Loved the Vibe"
+                        {item?.testimony}
                       </Text>
                     </Stack>
                   </Card>
                 </Grid.Col>
-
-               <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-                  <Card
-                    radius="lg"
-                    shadow="md"
-                    padding="md"
-                    withBorder
-                    className={style.featureddish}
-                  >
-                    <img
-                      src="https://picsum.photos/id/4/200/300"
-                      className={style.featureddishimage}
-                    />
-
-                    <Stack gap={4} mt="sm">
-                      <Group justify="space-between">
-                        <Text fw={700}>Sher Bahadur Deuba</Text>
-                      </Group>
-
-                      <Text size="sm" c="dimmed" lineClamp={2}>
-                        Very Tasty Food Loved the Place and Loved the Vibe
-                      </Text>
-                    </Stack>
-                  </Card>
-                </Grid.Col>
-
-               <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-                  <Card
-                    radius="lg"
-                    shadow="md"
-                    padding="md"
-                    withBorder
-                    className={style.featureddish}
-                  >
-                    <img
-                      src="https://picsum.photos/id/8/200/300"
-                      className={style.featureddishimage}
-                    />
-
-                    <Stack gap={4} mt="sm">
-                      <Group justify="space-between">
-                        <Text fw={700}>Prachanda</Text>
-                      </Group>
-
-                      <Text size="sm" c="dimmed" lineClamp={2}>
-                        Very Tasty Food Loved the Place and Loved the Vibe
-                      </Text>
-                    </Stack>
-                  </Card>
-                </Grid.Col>
+            ))}
           </Grid>
         </Box>
 

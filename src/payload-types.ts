@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     products: Product;
     category: Category;
+    testimonial: Testimonial;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     category: CategorySelect<false> | CategorySelect<true>;
+    testimonial: TestimonialSelect<false> | TestimonialSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -91,8 +93,16 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    banner: Banner;
+    aboutus: Aboutus;
+    contactus: Contactus;
+  };
+  globalsSelect: {
+    banner: BannerSelect<false> | BannerSelect<true>;
+    aboutus: AboutusSelect<false> | AboutusSelect<true>;
+    contactus: ContactusSelect<false> | ContactusSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -203,6 +213,19 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonial".
+ */
+export interface Testimonial {
+  id: string;
+  name: string;
+  personimage: string | Media;
+  testimony?: string | null;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -240,6 +263,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'category';
         value: string | Category;
+      } | null)
+    | ({
+        relationTo: 'testimonial';
+        value: string | Testimonial;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -356,6 +383,18 @@ export interface CategorySelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonial_select".
+ */
+export interface TestimonialSelect<T extends boolean = true> {
+  name?: T;
+  personimage?: T;
+  testimony?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -393,6 +432,96 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banner".
+ */
+export interface Banner {
+  id: string;
+  welcomeText?: string | null;
+  mainHeadingLine1: string;
+  mainHeadingLine2: string;
+  highlightText?: string | null;
+  paragraphtext: string;
+  heroImage: string | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutus".
+ */
+export interface Aboutus {
+  id: string;
+  aboutText?: string | null;
+  aboutTexthighlight?: string | null;
+  aboutusparagraphtext: string;
+  bgimageaboutus: string | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactus".
+ */
+export interface Contactus {
+  id: string;
+  contactText?: string | null;
+  contactTexthighlight?: string | null;
+  contactusparagraphtext: string;
+  contactph?: string | null;
+  contactdetails?: string | null;
+  email?: string | null;
+  emaildetails?: string | null;
+  bgimagecontactus: string | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banner_select".
+ */
+export interface BannerSelect<T extends boolean = true> {
+  welcomeText?: T;
+  mainHeadingLine1?: T;
+  mainHeadingLine2?: T;
+  highlightText?: T;
+  paragraphtext?: T;
+  heroImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutus_select".
+ */
+export interface AboutusSelect<T extends boolean = true> {
+  aboutText?: T;
+  aboutTexthighlight?: T;
+  aboutusparagraphtext?: T;
+  bgimageaboutus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactus_select".
+ */
+export interface ContactusSelect<T extends boolean = true> {
+  contactText?: T;
+  contactTexthighlight?: T;
+  contactusparagraphtext?: T;
+  contactph?: T;
+  contactdetails?: T;
+  email?: T;
+  emaildetails?: T;
+  bgimagecontactus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -87,7 +87,9 @@ export default function Description({ params }: Props) {
                   <Text size='sm' className={style.para}>
                     Experience a fresh take on seasonal flavors where every plate tells a story. From our farm-to-table ingredients to our hand-crafted cocktails, we invite you to savor the art of modern dining. Join us for an unforgettable evening in the heart of the city.
                   </Text>
-                  <b>$ {item?.price}</b>
+                  <Box>
+                      <b className={style.desprice}>$ {item?.price}</b>
+                  </Box>
                 </Stack>
               </GridCol>
 
@@ -101,7 +103,7 @@ export default function Description({ params }: Props) {
           </Stack>
         </Container>
       <Box className={style.trendbox}>
-        <Stack gap="md" mt="xl">
+        <Stack gap="md" mt="xl" mb="xl">
           <Group justify="space-between">
             <Title order={2}>Featured Dishes</Title>
           </Group>

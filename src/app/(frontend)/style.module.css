@@ -73,9 +73,11 @@
   justify-content: center;
 }
 
-/* .insidetextbox {
+.insidetextbox {
+  padding-left: 8vw;
   
-} */
+}
+
 
 .text{
   margin-top:3vh ;
@@ -98,6 +100,8 @@
   font-family: "Noto Sans Symbols 2", sans-serif;
   font-weight: 400;
   font-style: normal;
+  white-space: normal;
+  width: 80%;
 }
 
 .buttontex1  {

@@ -22,12 +22,14 @@ import style from './HeaderMenu.module.css'
 import { FaSearch } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { fetchCat } from '../../lib/fetchcat'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar({ onSearch, onCategoryChange }: any) {
   const [categories, setCategories] = useState<any[]>([])
   const [searchValue, setSearchValue] = useState('')
   const [opened, setOpened] = useState(false)
-
+  const pathname = usePathname()
+  const shouldLoadCategories = pathname === '/'
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   useEffect(() => {
@@ -44,6 +46,16 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
       behavior: 'smooth',
     })
   }
+  useEffect(() => {
+  if (!shouldLoadCategories) return
+
+  const getCat = async () => {
+    const data = await fetchCat()
+    setCategories(data)
+  }
+
+  getCat()
+}, [shouldLoadCategories])
 
   return (
     <>
@@ -64,11 +76,11 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
         {!isMobile && (
           <Grid.Col span={6} className={style.gridinner}>
             <Group className={style.group}>
-              <Link className={style.link} href="#about-us">About Us</Link>
-              <Link className={style.link} href="#menu">Menu</Link>
-              <Link className={style.link} href="#review">Review</Link>
-              <Link className={style.link} href="#contact-us">Contact</Link>
+              <Link className={style.link} href="/aboutus">About Us</Link>
+              <Link className={style.link} href="/">Menu</Link>
+              <Link className={style.link} href="/contactus">Contact</Link>
 
+             {shouldLoadCategories && ( 
               <HoverCard width={600} position="bottom" radius="md" shadow="md">
                 <HoverCard.Target>
                   <Link href="#" className={style.link}>
@@ -95,7 +107,7 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
                     ))}
                   </SimpleGrid>
                 </HoverCard.Dropdown>
-              </HoverCard>
+              </HoverCard>)}
             </Group>
           </Grid.Col>
         )}
@@ -150,7 +162,6 @@ export default function Navbar({ onSearch, onCategoryChange }: any) {
           ))}
 
           <Divider />
-
           <Input
             placeholder="Search Food..."
             value={searchValue}

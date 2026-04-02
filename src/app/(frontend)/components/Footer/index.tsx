@@ -1,4 +1,5 @@
-import { Container, Grid, Text, Title, List, Anchor, Group } from "@mantine/core";
+'use client'
+import { Container, Grid, GridCol,ListItem, Text, Title, List, Anchor, Group } from "@mantine/core";
 import Link from "next/link";
 import styles from "./style.module.css"
 
@@ -10,44 +11,44 @@ export default function Footer () {
         <Grid>
 
           {/* Brand */}
-          <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+          <GridCol span={{ base: 12, sm: 6, md: 3 }}>
             <Title order={3}>Restro Land</Title>
             <Text size="sm" mt="sm" c="dimmed">
               Serving delicious meals made with fresh ingredients. Experience taste like never before.
             </Text>
-          </Grid.Col>
+          </GridCol>
 
           {/* Navigation */}
-          <Grid.Col span={{ base: 6, sm: 6, md: 3 }}>
+          <GridCol span={{ base: 6, sm: 6, md: 3 }}>
             <Title order={4}>Quick Links</Title>
             <List mt="sm" spacing="xs">
-              <List.Item><Anchor component={Link} href="/">Home</Anchor></List.Item>
-              <List.Item><Anchor component={Link} href="/menu">Menu</Anchor></List.Item>
-              <List.Item><Anchor component={Link} href="/about">About Us</Anchor></List.Item>
-              <List.Item><Anchor component={Link} href="/contact">Contact</Anchor></List.Item>
-              <List.Item><Anchor component={Link} href="/reservations">Reservations</Anchor></List.Item>
+              <ListItem><Anchor component={Link} href="/">Home</Anchor></ListItem>
+              <ListItem><Anchor component={Link} href="/menu">Menu</Anchor></ListItem>
+              <ListItem><Anchor component={Link} href="/about">About Us</Anchor></ListItem>
+              <ListItem><Anchor component={Link} href="/contact">Contact</Anchor></ListItem>
+              <ListItem><Anchor component={Link} href="/reservations">Reservations</Anchor></ListItem>
             </List>
-          </Grid.Col>
+          </GridCol>
 
           {/* Contact */}
-          <Grid.Col span={{ base: 6, sm: 6, md: 3 }}>
+          <GridCol span={{ base: 6, sm: 6, md: 3 }}>
             <Title order={4}>Contact</Title>
             <List mt="sm" spacing="xs">
-              <List.Item>📍 Nayabazar, Kathmandu</List.Item>
-              <List.Item>📞 +977-9841449298</List.Item>
-              <List.Item>✉️ info@restroland.com</List.Item>
+              <ListItem>📍 Nayabazar, Kathmandu</ListItem>
+              <ListItem>📞 +977-9841449298</ListItem>
+              <ListItem>✉️ info@restroland.com</ListItem>
             </List>
-          </Grid.Col>
+          </GridCol>
 
           {/* Hours */}
-          <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+          <GridCol span={{ base: 12, sm: 6, md: 3 }}>
             <Title order={4}>Opening Hours</Title>
             <List mt="sm" spacing="xs">
-              <List.Item>Mon - Fri: 10:00 AM – 10:00 PM</List.Item>
-              <List.Item>Sat: 11:00 AM – 11:30 PM</List.Item>
-              <List.Item>Sun: 11:00 AM – 9:00 PM</List.Item>
+              <ListItem>Mon - Fri: 10:00 AM – 10:00 PM</ListItem>
+              <ListItem>Sat: 11:00 AM – 11:30 PM</ListItem>
+              <ListItem>Sun: 11:00 AM – 9:00 PM</ListItem>
             </List>
-          </Grid.Col>
+          </GridCol>
 
         </Grid>
       </Container>
