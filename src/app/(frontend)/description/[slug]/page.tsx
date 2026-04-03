@@ -66,42 +66,45 @@ export default function Description({ params }: Props) {
   }
 
   return (
-    <AppShell className={style.appshell}>  
+    <AppShell className={style.appshell}>
       <Box px="sm" py="sm">
         <Group justify="space-between">
           <Navbar />
         </Group>
       </Box>
       <Container size="lg" p="xl">
-          <Stack>
-            <Grid>
-              <GridCol span={{ base: 12, md: 6 }}>
-                <Stack>
-                  <h1>{item?.name}</h1>
+        <Stack>
+          <Grid>
+            <GridCol span={{ base: 12, md: 6 }}>
+              <Stack>
+                <h1>{item?.name}</h1>
 
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: item?.description,
-                    }}
-                  />
-                  <Text size='sm' className={style.para}>
-                    Experience a fresh take on seasonal flavors where every plate tells a story. From our farm-to-table ingredients to our hand-crafted cocktails, we invite you to savor the art of modern dining. Join us for an unforgettable evening in the heart of the city.
-                  </Text>
-                  <Box>
-                      <b className={style.desprice}>$ {item?.price}</b>
-                  </Box>
-                </Stack>
-              </GridCol>
-
-              <GridCol span={{ base: 12, md: 6 }}>
-                <img
-                  src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item?.image[0]?.url}`}
-                  className={style.detailsimg}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: item?.description,
+                  }}
                 />
-              </GridCol>
-            </Grid>
-          </Stack>
-        </Container>
+                <Text size="sm" className={style.para}>
+                  Experience a fresh take on seasonal flavors where every plate tells a story. From
+                  our farm-to-table ingredients to our hand-crafted cocktails, we invite you to
+                  savor the art of modern dining. Join us for an unforgettable evening in the heart
+                  of the city.
+                </Text>
+                <Box>
+                  <b className={style.desprice}>$ {item?.price}</b>
+                </Box>
+              </Stack>
+            </GridCol>
+
+            <GridCol span={{ base: 12, md: 6 }}>
+              <img
+                src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item?.image[0]?.url}`}
+                className={style.detailsimg}
+              />
+            </GridCol>
+          </Grid>
+        </Stack>
+      </Container>
       <Box className={style.trendbox}>
         <Stack gap="md" mt="xl" mb="xl">
           <Group justify="space-between">
@@ -141,8 +144,7 @@ export default function Description({ params }: Props) {
           </Grid>
         </Stack>
       </Box>
-    <Footer/>
+      <Footer />
     </AppShell>
-
   )
 }

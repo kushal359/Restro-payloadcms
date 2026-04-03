@@ -2,9 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Category: CollectionConfig = {
   slug: 'category',
-   access: {
-        read: () => true,
-    },
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Category',
     plural: 'Categories',

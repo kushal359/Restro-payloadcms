@@ -4,8 +4,8 @@ import '@mantine/core/styles.css'
 import { MantineProvider } from '@mantine/core'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'Welcome to Restroland Where Food Meets Desires.',
+  title: 'Restro Land Restaurant',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

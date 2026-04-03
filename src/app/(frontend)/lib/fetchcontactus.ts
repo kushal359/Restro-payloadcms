@@ -5,8 +5,8 @@ export async function fetchCon() {
       throw new Error('Network response was not ok')
     }
     const data = await res.json()
-    console.log(data);
-    return data;
+    console.log(data)
+    return data
   } catch (err) {
     console.error('Failed to fetch contactus:', err)
     return []

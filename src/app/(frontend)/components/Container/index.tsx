@@ -7,6 +7,7 @@ import { fetchMenu } from '../../lib/fetchmenu'
 import style from './style.module.css'
 import { fetchtestimony } from '../../lib/fetchtestimonial'
 import { fetchCat } from '../../lib/fetchcat'
+import { useRef } from 'react'
 
 /**
  * sluggify function
@@ -22,6 +23,7 @@ export default function Content({ selectedCategory }: any) {
   const [menuItems, setMenuItems] = useState<any[]>([])
   const [tesItems, setTesItems] = useState<any>([])
   const [categories, setCategories] = useState<any>([]);
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   /**
    * Fetch menu
@@ -35,6 +37,10 @@ export default function Content({ selectedCategory }: any) {
     getMenu()
   }, [])
 
+  /**
+   * get categories
+   */
+
   useEffect(() => {
     const getCat = async () => {
       const items = await fetchCat()
@@ -44,18 +50,20 @@ export default function Content({ selectedCategory }: any) {
     getCat()
   }, [])
 
+  useEffect(() => {
+    if (selectedCategory && categoryRefs.current[selectedCategory]) {
+      categoryRefs.current[selectedCategory]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }, [selectedCategory])
+
   /**
    * Grab Featured items from all items
    */
   const featuredItems = menuItems?.filter((item: any) => item.isFeatured)
-  /**
-   * Filter menu items
-   */
-  const filteredMenu = menuItems?.filter((item: any) => {
-    const matchesCategory = !selectedCategory || item.category?.name === selectedCategory
-
-    return matchesCategory
-  })
+ 
 
    /**
      * Fetch Testimonial
@@ -84,9 +92,7 @@ export default function Content({ selectedCategory }: any) {
           </Group>
             
           <Grid>
-            {featuredItems &&
-              (!selectedCategory) &&
-              featuredItems?.map((item: any) => (
+            {featuredItems?.map((item: any) => (
                 <Grid.Col key={item.id} span={{ base: 12, sm: 6, md: 3 }}>
                 <a className={style.featuredanchor} href={`/description/${slugify(item.name)}`}>
                   <Card
@@ -130,57 +136,61 @@ export default function Content({ selectedCategory }: any) {
         </Group>
         
         <Grid gap="xs">
-          {categories.map((category: any) => (
-                <Grid.Col key={category.id} span={12}>
-                  <Title order={3} ta="center" my="lg">
-                    {category.name}
-                  </Title>
+            {categories.map((category: any) => (
+            <Grid.Col
+            key={category.id}
+            span={12}
+            className="catSection"
+            ref={(el) => {
+              categoryRefs.current[category.name] = el
+            }}          >
+      <Title order={3} ta="center" my="lg">
+        {category.name}
+      </Title>
 
-                  <Grid className={style.catmenucol}  gap="md">
-                    {filteredMenu
-                      .filter(item => (item.category?.name) === category.name)
-                      .slice(0, 4)
-                      .map((item: any) => (
-                        <Grid.Col key={item.id} span={{ base: 12, sm: 6, md: 6 }}>
-                          <a
-                            className={style.linktd}
-                            href={`/description/${slugify(item.name)}`}
-                          >
-                            <Card radius="sm" padding="sm" className={style.filtermenuCard}>
-                              <Flex align="center" gap="sm">
-                                
-                                <div className={style.innerfiltermenu}>
-                                  <img
-                                    src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item.image?.[0]?.url}`}
-                                    className={style.innerfiltermenuImg}
-                                    alt={item.name}
-                                  />
-                                </div>
+      <Grid className={style.catmenucol} gap="md">
+              {menuItems
+                .filter((item) => item.category?.name === category.name)
+                .slice(0, 4)
+                .map((item: any) => (
+                  <Grid.Col key={item.id} span={{ base: 12, sm: 6, md: 6 }}>
+                    <a
+                      className={style.linktd}
+                      href={`/description/${slugify(item.name)}`}
+                    >
+                      <Card radius="sm" padding="sm" className={style.filtermenuCard}>
+                        <Flex align="center" gap="sm">
+                          <div className={style.innerfiltermenu}>
+                            <img
+                              src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item.image?.[0]?.url}`}
+                              className={style.innerfiltermenuImg}
+                              alt={item.name}
+                            />
+                          </div>
 
-                                <Stack gap={2} style={{ flex: 1 }}>
-                                  <Group justify="space-between">
-                                    <Text fw={600} size="sm">
-                                      {item.name}
-                                    </Text>
-                                    <Text fw={600} c="orange" size="sm">
-                                      ${item.price}
-                                    </Text>
-                                  </Group>
+                          <Stack gap={2} style={{ flex: 1 }}>
+                            <Group justify="space-between">
+                              <Text fw={600} size="sm">
+                                {item.name}
+                              </Text>
+                              <Text fw={600} c="orange" size="sm">
+                                ${item.price}
+                              </Text>
+                            </Group>
 
-                                  <Text size="xs" c="dimmed" lineClamp={2}>
-                                    {item.description?.replace(/<[^>]+>/g, '')}
-                                  </Text>
-                                </Stack>
-
-                              </Flex>
-                            </Card>
-                          </a>
-                        </Grid.Col>
-                      ))}
-                  </Grid>
-                </Grid.Col>
-              ))}
-        </Grid>
+                            <Text size="xs" c="dimmed" lineClamp={2}>
+                              {item.description?.replace(/<[^>]+>/g, '')}
+                            </Text>
+                          </Stack>
+                        </Flex>
+                      </Card>
+                    </a>
+                  </Grid.Col>
+                ))}
+            </Grid>
+          </Grid.Col>
+        ))}
+      </Grid>
       </Stack>
       {/* Testimonial Section */}
       <Stack gap="xs">

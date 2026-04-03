@@ -13,7 +13,6 @@ import { Testimonial } from './collections/Testimonials'
 import { Aboutus } from './globals/aboutus'
 import { Contactus } from './globals/Contact'
 
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -24,9 +23,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  cors: ['http://localhost:3000', 'http://0.0.0.0:3000'],
   collections: [Users, Media, Products, Category, Testimonial],
   editor: lexicalEditor(),
-  globals: [Banner,Aboutus,Contactus],
+  globals: [Banner, Aboutus, Contactus],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

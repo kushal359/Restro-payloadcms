@@ -1,5 +1,5 @@
 'use client'
-import { AppShell, Group, Box, Text, Button, Image, Grid, Center, Flex} from '@mantine/core'
+import { AppShell, Group, Box, Text, Button, Image, Grid, Center, Flex } from '@mantine/core'
 import Navbar from './components/Header'
 import Content from './components/Container'
 import style from './style.module.css'
@@ -12,37 +12,45 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [banItems, setBanItems] = useState<any>([])
 
+  /**
+   * Fetch Banner
+   */
+  useEffect(() => {
+    const getbanner = async () => {
+      const items = await fetchBan()
+      setBanItems(items)
+    }
+    getbanner()
+  }, [])
 
-    /**
-     * Fetch Banner
-     */
-    useEffect(() => {
-      const getbanner = async () => {
-        const items = await fetchBan()
-        setBanItems(items)
-      }
-      getbanner()
-    }, [])
-
-
-    const text = banItems?.paragraphtext
-  ?.replace(/<\/?[^>]+(>|$)/g, '')
+  const text = banItems?.paragraphtext?.replace(/<\/?[^>]+(>|$)/g, '')
   return (
     <AppShell className={style.appshell}>
       {/* Top Navbar */}
-      <Box className={style.imageWrapper}> 
+      <Box className={style.imageWrapper}>
         <Grid pt={60}>
           <Grid.Col className={style.textbox} span={{ base: 12, md: 6, lg: 6 }}>
             <Box className={style.insidetextbox}>
-              <Text className={style.text1} ta="left" size='1rem' fw={600}>{banItems?.welcomeText}</Text>
-              <Text className={style.text} ta="left" size='3rem' fw={600}>{banItems?.mainHeadingLine1}</Text>
-              <Text className={style.text} ta="left" size="3rem" fw={600}>{banItems?.mainHeadingLine2}<span className={style.textspan}>{banItems?.highlightText}</span></Text>            
-              <Text className={style.paratext} >{text}</Text>
+              <Text className={style.text1} ta="left" size="1rem" fw={600}>
+                {banItems?.welcomeText}
+              </Text>
+              <Text className={style.text} ta="left" size="3rem" fw={600}>
+                {banItems?.mainHeadingLine1}
+              </Text>
+              <Text className={style.text} ta="left" size="3rem" fw={600}>
+                {banItems?.mainHeadingLine2}
+                <span className={style.textspan}>{banItems?.highlightText}</span>
+              </Text>
+              <Text className={style.paratext}>{text}</Text>
               <Flex className={style.buttontex} mt={20} gap={15}>
-                <Button color='#ff6600' className={style.buttontex1}>Reserve a table</Button>
-                <Button color='#ff6600' variant="outline" className={style.buttontex2} >Order online</Button>
+                <Button color="#ff6600" className={style.buttontex1}>
+                  Reserve a table
+                </Button>
+                <Button color="#ff6600" variant="outline" className={style.buttontex2}>
+                  Order online
+                </Button>
               </Flex>
-              </Box>
+            </Box>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
             <Image
@@ -63,7 +71,7 @@ export default function Home() {
         <Content searchQuery={searchQuery} selectedCategory={selectedCategory} />
       </Box>
       <Box>
-        <Footer/>
+        <Footer />
       </Box>
     </AppShell>
   )

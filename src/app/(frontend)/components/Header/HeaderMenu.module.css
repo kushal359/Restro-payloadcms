@@ -90,11 +90,26 @@
   font-weight: 600;
   border-bottom: 2px solid #ff6b6b;
 }
-.cate {
-  width: 10%;
-}
+/* .cate {
+  width: 50px;
+} */
 
 .searchicon{
   color: #ff6600;
   border: 1px solid black;
 }
+
+.catSection {
+  scroll-margin-top: 100px;
+}
+
+                  
+.linktd{
+  border-radius: 6px;
+  cursor: pointer;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+

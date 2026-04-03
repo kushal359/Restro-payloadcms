@@ -10,12 +10,11 @@ import {
   Center,
   Divider,
   HoverCard,
-  SimpleGrid,
   Burger,
   Drawer,
   Stack,
   Modal,
-  Container
+  Container,
 } from '@mantine/core'
 import { IconChefHat, IconChevronDown, IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
@@ -28,13 +27,21 @@ import { useDisclosure } from '@mantine/hooks'
 import { Image } from '@mantine/core'
 import { fetchMenu } from '../../lib/fetchmenu'
 
+function slugify(data: string) {
+  return data
+    ?.toLowerCase()
+    ?.replace(/[^a-z0-9\s-]/g, '')
+    ?.replace(/\s+/g, '-')
+}
+
 export default function Navbar({ onCategoryChange }: any) {
   const [categories, setCategories] = useState<any[]>([])
   const [opened, setOpened] = useState(false)
   const [openedsearch, { open, close }] = useDisclosure(false)
   const [searchValue, setSearchValue] = useState('')
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [items, setItems] = useState<any[]>([])
-const [filteredItems, setFilteredItems] = useState<any[]>([])
+  const [filteredItems, setFilteredItems] = useState<any[]>([])
   const pathname = usePathname()
   const shouldLoadCategories = pathname === '/'
 
@@ -49,31 +56,58 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
     getCat()
   }, [shouldLoadCategories])
 
+  /**
+   * Debouncing Search
+   */
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedQuery(searchValue);
+      }, 500); 
+
+      return () => {
+        clearTimeout(handler); 
+      };
+  }, [searchValue]);
+
+
+  useEffect(() => {
+      if (!debouncedQuery) {
+        setFilteredItems(items)
+        return
+      }
+
+      const filtered = items.filter((item) =>
+        item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
+      )
+
+      setFilteredItems(filtered)
+    }, [debouncedQuery, items])
+
+  
+  /**
+   * scrolling
+   */
   const scrollToHeight = () => {
     window.scrollTo({
       top: 580,
       behavior: 'smooth',
     })
   }
-  useEffect(() => {
-  const getItems = async () => {
-    const data = await fetchMenu()
-    setItems(data)
-    setFilteredItems(data)
-  }
 
-  getItems()
-}, [])
+
+  useEffect(() => {
+    const getItems = async () => {
+      const data = await fetchMenu()
+      setItems(data)
+      setFilteredItems(data)
+    }
+
+    getItems()
+  }, [])
 
   const handleSearch = (value: string) => {
-  setSearchValue(value)
-
-  const filtered = items.filter((item) =>
-    item.name.toLowerCase().includes(value.toLowerCase())
-  )
-
-  setFilteredItems(filtered)
-}
+    setSearchValue(value)
+  }
 
   return (
     <>
@@ -93,13 +127,22 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
         {/* Desktop Nav */}
         <Grid.Col span={{ base: 0, sm: 7 }} visibleFrom="sm">
           <Group className={style.group}>
-            <Link className={`${style.link} ${pathname === '/aboutus' ? style.active : ''}`} href="/aboutus">
+            <Link
+              className={`${style.link} ${pathname === '/aboutus' ? style.active : ''}`}
+              href="/aboutus"
+            >
               About Us
             </Link>
-            <Link className={`${style.link} ${pathname === '/menu' ? style.active : ''}`} href="/menu">
+            <Link
+              className={`${style.link} ${pathname === '/menu' ? style.active : ''}`}
+              href="/menu"
+            >
               Menu
             </Link>
-            <Link className={`${style.link} ${pathname === '/contactus' ? style.active : ''}`} href="/contactus">
+            <Link
+              className={`${style.link} ${pathname === '/contactus' ? style.active : ''}`}
+              href="/contactus"
+            >
               Contact
             </Link>
 
@@ -114,36 +157,29 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
                   </Link>
                 </HoverCard.Target>
 
-                <HoverCard.Dropdown className={style.cate}>
-                  <SimpleGrid cols={3}>
-                    {categories.map((cat, index) => (
-                      <Anchor
-                        key={index}
-                        className={style.dropdownItem}
-                        onClick={() => {
-                          onCategoryChange(cat.name)
-                          scrollToHeight()
-                        }}
-                      >
-                        {cat.name}
-                      </Anchor>
-                    ))}
-                  </SimpleGrid>
+                <HoverCard.Dropdown w={200} className={style.cate}>
+                  {categories.map((cat, index) => (
+                    <Anchor
+                      key={index}
+                      className={style.dropdownItem}
+                      onClick={() => {
+                        onCategoryChange(cat.name)
+                        scrollToHeight()
+                      }}
+                    >
+                      {cat.name}
+                    </Anchor>
+                  ))}
                 </HoverCard.Dropdown>
               </HoverCard>
             )}
           </Group>
         </Grid.Col>
 
-        {/* Desktop Search Icon ✅ FIXED */}
+        {/* Desktop Search Icon */}
         <Grid.Col span={{ base: 0, sm: 2 }} visibleFrom="sm">
           <Center style={{ height: '100%' }}>
-            <IconSearch
-              size={22}
-              color="#000"
-              style={{ cursor: 'pointer' }}
-              onClick={open}
-            />
+            <IconSearch size={22} color="#000" style={{ cursor: 'pointer' }} onClick={open} />
           </Center>
         </Grid.Col>
 
@@ -166,9 +202,15 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
         size="100%"
       >
         <Stack gap="md">
-          <Link href="/aboutus" onClick={() => setOpened(false)}>About Us</Link>
-          <Link href="/menu" onClick={() => setOpened(false)}>Menu</Link>
-          <Link href="/contactus" onClick={() => setOpened(false)}>Contact</Link>
+          <Link href="/aboutus" onClick={() => setOpened(false)}>
+            About Us
+          </Link>
+          <Link href="/menu" onClick={() => setOpened(false)}>
+            Menu
+          </Link>
+          <Link href="/contactus" onClick={() => setOpened(false)}>
+            Contact
+          </Link>
 
           <Divider />
 
@@ -203,7 +245,7 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
       </Drawer>
 
       {/* Search Modal */}
-     <Modal opened={openedsearch} size="lg" onClose={close} title="Search Food" centered>
+      <Modal opened={openedsearch} size="lg" onClose={close} title="Search Food" centered>
         <Input
           placeholder="Search Food..."
           radius="xl"
@@ -215,28 +257,22 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
 
         <Container mt="sm">
           {searchValue && filteredItems.length > 0 ? (
-            <Stack
-              style={{ width: '100%', alignItems: 'center' }}
-              gap="xs"
-            >              
-            {filteredItems.map((item, index) => (
-                <Box
+            <Stack style={{ width: '100%', alignItems: 'center' }} gap="xs">
+             {debouncedQuery && filteredItems.map((item, index) => (
+                  <Link
                     key={index}
-                    p="sm"
-                    style={{
-                      border: '1px solid #eee',
-                      borderRadius: 6,
-                      cursor: 'pointer',
-                      width: '50%',
-                      display: 'flex',
-                      justifyContent: 'center'
-                    }}
-                    onClick={() => {
-                      onCategoryChange(item.name)
-                      close()
-                    }}
+                    className={style.linktd}
+                    href={`/description/${slugify(item.name)}`}
                   >
-                  <Group p="xs" style={{ width: '100%', justifyContent: 'center' }}>                    
+                    <Box
+                      p="sm"
+                      onClick={() => {
+                        onCategoryChange(item.name)
+                        close()
+                      }}
+                    >
+                                  
+                    <Group p="xs" style={{ width: '100%', justifyContent: 'center' }}>
                     {item.image && (
                       <Image
                         src={`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${item.image?.[0]?.url}`}
@@ -257,6 +293,7 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
                     </div>
                   </Group>
                 </Box>
+                </Link>
               ))}
             </Stack>
           ) : (
@@ -266,6 +303,6 @@ const [filteredItems, setFilteredItems] = useState<any[]>([])
           )}
         </Container>
       </Modal>
-          </>
+    </>
   )
 }

@@ -5,8 +5,8 @@ export async function fetchabo() {
       throw new Error('Network response was not ok')
     }
     const data = await res.json()
-    console.log(data);
-    return data;
+    console.log(data)
+    return data
   } catch (err) {
     console.error('Failed to fetch Aboutus:', err)
     return []

@@ -19,7 +19,9 @@
 
 .featureddish {
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .featureddish:hover {
   transform: scale(1.03);
@@ -38,7 +40,6 @@
 
 .featureddishimage:hover {
   transform: scale(1.08);
-
 }
 
 .category {
@@ -49,7 +50,9 @@
 .filtermenuCard {
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .filtermenuCard:hover {
   transform: scale(1.03);
@@ -70,7 +73,6 @@
 }
 .innerfiltermenuImg:hover {
   transform: scale(1.08);
-
 }
 
 .linktd {
